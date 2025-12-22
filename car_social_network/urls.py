@@ -7,6 +7,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+
     # Admin panel
     path('admin/', admin.site.urls),
 
@@ -20,7 +21,7 @@ urlpatterns = [
     path('admin-accept-user/<int:user_id>', adminapp_views.accept_user, name='accept_user'),
     path('admin-decline-user/<int:user_id>', adminapp_views.decline_user, name='decline_user'),
 
-    # Main app URLs
+    # Home app URLs
     path('', mainapp_views.home_index, name='home_index'),
     path('home-admin-login', mainapp_views.home_admin_login, name='home_admin_login'),
     path('home-user-login', mainapp_views.home_user_login, name='home_user_login'),
@@ -34,8 +35,9 @@ urlpatterns = [
     path('user-feedback', userapp_views.user_feedback, name='user_feedback'),
     path('contact-email/<int:driver_id>/<str:text>', userapp_views.contact_email, name='contact_email'),
     path('contact_call/<int:driver_id>/<str:text>', userapp_views.contact_call, name='contact_call'),
+
 ]
 
-# Media files (only if MEDIA_URL exists)
+# Media files (development / render)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
