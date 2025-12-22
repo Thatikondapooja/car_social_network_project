@@ -103,65 +103,69 @@ def user_profile(request):
     # device=DeviceModel.objects.filter(device_user=user_id).count()
 
     
-   from django.shortcuts import render, redirect
-from django.contrib import messages
-from userapp.models import UserModel
+    if request.method=="POST":
+        if len(request.FILES) ==0:
+            name=request.POST.get("name")
+            
+            email=request.POST.get("email")
+            password=request.POST.get("password")
+            contact=request.POST.get("contact")
+            privacy = request.POST.get("privacy")
+            license = request.POST.get("license")
+            photo=request.FILES["photo"]
+            user.user_name = name
+
+            user.user_email = email
+            user.user_password = password
+            user.user_contact = contact
+            user.user_privacy_status =  privacy
+            user.user_license = license
+        # user.user_country = country
+
+            user.save()
+            if user:
+                messages.success(request,"Succesflly Updated")
+                return redirect("user_profile")
+
+            else:
+                messages.error(request,"No changes detected")
+                return redirect("user_profile")
+        else:
+            if request.method=="POST" and request.FILES['file']:
+                profile=request.FILES['file']
+                name=request.POST.get("name")
+                
+                email=request.POST.get("email")
+                password=request.POST.get("password")
+                contact=request.POST.get("contact")
+                privacy = request.POST.get("privacy")
+                license = request.POST.get("license")
+                # photo=request.FILES["photo"]
+                user.user_name = name
+                user.user_photo = profile
+                user.user_email = email
+                user.user_password = password
+                user.user_contact = contact
+                user.user_privacy_status =  privacy
+                user.user_license = license
+                
+                # user.user_country = country
+
+                user.save()
+                if user:
+                    messages.success(request,"Succesflly Updated")
+                    return redirect("user_profile")
+                
+
+                    
+
+                else:
+                    messages.error(request,"No changes detected")
+                    return redirect("user_profile")
+    return render(request,"user/user-profile.html",{'user':user})
 
 
-def home_user_reg(request):
-    if request.method == "POST":
-        try:
-            # text fields
-            name = request.POST.get("name")
-            email = request.POST.get("email")
-            password = request.POST.get("password")
-            contact = request.POST.get("contact")
-            visibal = request.POST.get("visibal")
 
-            # checkboxes
-            contact1 = request.POST.get("contact1")
-            contact2 = request.POST.get("contact2")
-            contact3 = request.POST.get("contact3")
-
-            # files (SAFE access)
-            license_img = request.FILES.get("license")
-            photo = request.FILES.get("photo")
-
-            # basic validation
-            if not all([name, email, password, contact, visibal, license_img, photo]):
-                messages.error(request, "All fields are required")
-                return redirect("home_user_reg")
-
-            # email uniqueness check
-            if UserModel.objects.filter(user_email=email).exists():
-                messages.error(request, "Email already registered")
-                return redirect("home_user_reg")
-
-            # save user (NO OCR, NO OPENCV)
-            user = UserModel.objects.create(
-                user_name=name,
-                user_email=email,
-                user_password=password,
-                user_contact=contact,
-                user_license=license_img,
-                user_photo=photo,
-                user_privacy_status=visibal,
-                contact_email=contact1 is not None,
-                contact_sms=contact2 is not None,
-                contact_call=contact3 is not None,
-                user_status="pending",
-            )
-
-            messages.success(request, "Registration successful. Await admin approval.")
-            return redirect("home_user_login")
-
-        except Exception as e:
-            print("REGISTRATION ERROR:", e)
-            messages.error(request, "Server error during registration")
-            return redirect("home_user_reg")
-
-    return render(request, "home/home-user-reg.html")
-    
 def user_feedback(request):
     user_id=request.session['user_id']
     user=UserModel.objects.get(user_id=user_id)
