@@ -73,7 +73,9 @@ WSGI_APPLICATION = "car_social_network.wsgi.application"
 # ✔ Render → SQLite
 # ✔ Local → MySQL
 
-if os.environ.get("RENDER"):
+USE_SQLITE = os.environ.get("RENDER") or os.environ.get("USE_SQLITE")
+
+if USE_SQLITE:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -91,6 +93,7 @@ else:
             "PORT": "3306",
         }
     }
+
 
 # =========================
 # PASSWORD VALIDATION
