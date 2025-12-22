@@ -1,7 +1,7 @@
 from ast import Return
 from email.message import Message
 from itertools import count
-from turtle import update
+
 from unicodedata import category
 # from ssl import _PasswordType
 from django.db.models import Avg,Max,Min,Sum,Count,StdDev,Variance
