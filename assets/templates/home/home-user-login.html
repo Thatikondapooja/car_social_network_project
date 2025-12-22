@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'home/images/icons8-car-48.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <title>Car Social Network</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'home/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!--
+
+TemplateMo 570 Chain App Dev
+
+https://templatemo.com/tm-570-chain-app-dev
+
+-->
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'home/css/templatemo-chain-app-dev.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'home/css/animated.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'home/css/owl.css' %}">
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+</head>
+
+<body>
+    {% comment %} javaScript validation {% endcomment %}
+
+    <script type="text/javascript">
+        function loginvalidation() {
+            var email = document.myform.email
+            var password = document.myform.password
+            
+            
+            
+
+             
+            if (email.value.length <= 0) {
+                alert("Please enter your email")
+                email.focus();
+                return false;
+            }
+            if (password.value.length <= 0) {
+                alert("Please enter your password")
+                password.focus();
+                return false;
+            }
+          
+            
+        }   
+</script>
+
+
+
+  {% csrf_token %}
+  {% if messages %}
+  {% for message in messages %}
+  {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+  <script>swal({
+          title: "Login Successfully!",
+          text: "{{message}}",
+          icon: "success",
+          button: "OK",
+      });
+  </script>
+
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+  <script>swal({
+          title: "Warning :)",
+          text: "{{message}}",
+          icon: "warning",
+          button: "OK",
+      });
+  </script>
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+  <script>swal({
+          title: "error :)",
+          text: "{{message}}",
+          icon: "error",
+          button: "OK",
+      });
+  </script>
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+  <script>swal({
+          title: "error :)",
+          text: "{{message}}",
+          icon: "error",
+          button: "OK",
+      });
+  </script>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-2">
+                  <a href="{% url 'home_index' %}" class="logo">
+                    <img src="{% static 'home/images/icons8-car-48.png' %}" style="height: 50px;width:50px;" alt="Chain App Dev">&nbsp;&nbsp;
+                    <img src="{% static 'home/images/carsocial(1).svg' %}" style="height: 100px;width:190px;" alt="Chain App Dev">
+                  </a>
+                </div>
+                <div class="col-9">
+                  <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <!-- <a href="user-admin-index.html" class="logo">
+                      <img src="assets/images/logo.png" alt="Chain App Dev">
+                    </a> -->
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                      <li class="scroll-to-section"><a href="{% url 'home_index' %}" >Home</a></li>
+                      <li class="scroll-to-section"><a href="{% url 'home_admin_login' %}" >Admin</a></li>
+                      <li class="scroll-to-section"><a href="{% url 'home_user_login' %}" class="active">Login</a></li>
+                      
+                      <li class="scroll-to-section"><a href="{% url 'about' %}">About</a></li>
+                      
+                      <li><div class="gradient-button"></div></li> 
+                    </ul>        
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                  </nav>
+                </div>
+              </div>
+        </div>
+      </header>
+    <!-- ***** Header Area End ***** -->
+
+    <div id="modal" class="popupContainer" style="display:none;">
+        <div class="popupHeader">
+            <span class="header_title">Login</span>
+            <span class="modal_close"><i class="fa fa-times"></i></span>
+        </div>
+
+
+    </div>
+
+
+
+    <div id="services" class="services section">
+        <div class="container">
+            
+            <div class="row justify-content-center gfg">
+                <div class="row justify-content-center">
+                    <h2 class="row justify-content-center" style="color: rgb(18, 110, 141);">User Login Here!</h2>
+                </div><br><br><br>
+                        <div class="col-lg-6" >
+                            <div class="card" style="background-color:rgb(18, 110, 141) ;">
+                                <div class="card-body">
+                                <form class="mt-1 mb-1 login-input" method="post" enctype="multipart/form-data" onsubmit='return loginvalidation();' name='myform'>
+                                    {% csrf_token %}
+                                <!-- Email input -->
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form1Example1">Email address:</label>
+                                    <input type="email" id="form1Example1" name="email" placeholder="Email" class="form-control" />
+                                    
+                                </div>
+
+                                <!-- Password input -->
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form1Example2">Password:</label>
+                                    <input type="password" id="form1Example2" name="password" placeholder="Password" class="form-control" />
+                                    
+                                </div>
+
+                                <!-- 2 column grid layout for inline styling -->
+                                <div class="row mb-4 justify-content-center">
+                                    <button class="btn btn-primary text-black"   role="button" type="submit" style="background-color: rgb(85, 213, 213);width: 120px;">
+                                    
+                                        Sign in</button>
+                                    
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-6 text-center">
+                                    Don't have an account? <a style="color: rgb(85, 213, 213);" href="{% url 'home_user_reg' %}" lass="text-primary">Register</a>                                </div>
+                                <!-- Submit button -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            </form>
+                        
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <footer id="newsletter">
+        <div class="container" style="padding-left: 25%;">
+          
+        <div class="row justify-content-center" >
+            
+            
+              <div class="col-lg-8 gfg align-content-center" >
+                <p class="text-black">Copyright © 2023. All rights reserved.<br><br>
+                    Designed and Developed By: <a href="www.linkedin.com/in/thatikonda-pooja-76b2132ba" target="_blank">Poojathatikonda</a>
+                 </p>
+              
+              </div>
+            
+          
+        </div>
+    </footer>
+
+
+
+
+
+    <!-- Scripts -->
+    <script src="{% static 'home/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'home/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'home/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'home/js/animation.js' %}"></script>
+    <script src="{% static 'home/js/imagesloaded.js' %}"></script>
+    <script src="{% static 'home/js/popup.js' %}"></script>
+      <script src="{% static 'home/js/custom.js' %}"></script>
+
+</body>
+
+</html>

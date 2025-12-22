@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'home/images/icons8-car-48.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <title>Car Social Network</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'home/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!--
+
+TemplateMo 570 Chain App Dev
+
+https://templatemo.com/tm-570-chain-app-dev
+
+-->
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'home/css/templatemo-chain-app-dev.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'home/css/animated.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'home/css/owl.css' %}">
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+</head>
+
+<body>
+    {% comment %} javaScript validation {% endcomment %}
+
+    <script type="text/javascript">
+        function loginvalidation() {
+            var name = document.myform.name
+            var email = document.myform.email
+            var mailformat = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/;
+            var contact = document.myform.contact
+            var password = document.myform.password
+            var license = document.myform.license
+            var photo = document.myform.photo
+            var contact1 = document.myform.contact1
+            var visibal = document.myform.visibal
+            
+            
+
+             
+            if (name.value.length <= 0) {
+                alert("Please Enter your name")
+                name.focus();
+                return false;
+            }
+            if (email.value.length <= 0) {
+                alert("Please Enter your email")
+                email.focus();
+                return false;
+            }
+          
+            if (contact.value.length <= 0) {
+                alert("Please Enter your contact")
+                contact.focus();
+                return false;
+            }
+
+            if (password.value.length <= 0) {
+                alert("Please Create your password")
+                password.focus();
+                return false;
+            }
+            
+            if (license.value.length <= 0) {
+                alert("Please select your License plate image")
+                license.focus();
+                return false;
+            }
+            if (photo.value.length <= 0) {
+                alert("Please select your profile photo")
+                photo.focus();
+                return false;
+            }
+
+
+            if (contact1.value.length <= 0) {
+                alert("You have to select atleast one contact option like 'Email' ")
+                contact1.focus();
+                return false;
+            }
+
+            if (visibal.value.length <= 0) {
+                alert("Please select a privacy option")
+                visibal.focus();
+                return false;
+            }
+        }   
+</script>
+
+
+
+  {% csrf_token %}
+  {% if messages %}
+  {% for message in messages %}
+  {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+  <script>swal({
+          title: "Registered Successfully!",
+          text: "{{message}}",
+          icon: "success",
+          button: "OK",
+      });
+  </script>
+
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+  <script>swal({
+          title: "Warning :)",
+          text: "{{message}}",
+          icon: "warning",
+          button: "OK",
+      });
+  </script>
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+  <script>swal({
+          title: "error :)",
+          text: "{{message}}",
+          icon: "error",
+          button: "OK",
+      });
+  </script>
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+  <script>swal({
+          title: "error :)",
+          text: "{{message}}",
+          icon: "error",
+          button: "OK",
+      });
+  </script>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-2">
+                  <a href="{% url 'home_index' %}" class="logo">
+                    <img src="{% static 'home/images/icons8-car-48.png' %}" style="height: 50px;width:50px;" alt="Chain App Dev">&nbsp;&nbsp;
+                    <img src="{% static 'home/images/carsocial(1).svg' %}" style="height: 100px;width:190px;" alt="Chain App Dev">
+                  </a>
+                </div>
+                <div class="col-9">
+                  <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <!-- <a href="user-admin-index.html" class="logo">
+                      <img src="assets/images/logo.png" alt="Chain App Dev">
+                    </a> -->
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                      <li class="scroll-to-section"><a href="{% url 'home_index' %}" class="active">Home</a></li>
+                      <li class="scroll-to-section"><a href="{% url 'home_admin_login' %}" >Admin</a></li>
+                      <li class="scroll-to-section"><a href="{% url 'home_user_login' %}" >Login</a></li>
+                      
+                      <li class="scroll-to-section"><a href="{% url 'about' %}">About</a></li>
+                      
+                      <li><div class="gradient-button"></div></li> 
+                    </ul>        
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                  </nav>
+                </div>
+              </div>
+        </div>
+      </header>
+    <!-- ***** Header Area End ***** -->
+
+    <div id="modal" class="popupContainer" style="display:none;">
+        <div class="popupHeader">
+            <span class="header_title">Login</span>
+            <span class="modal_close"><i class="fa fa-times"></i></span>
+        </div>
+
+
+    </div>
+
+
+
+    <div id="services" class="services section">
+        <div class="container">
+            
+            <div class="row justify-content-center gfg">
+                <div class="row justify-content-center">
+                    <h2 class="row justify-content-center" style="color: rgb(18, 110, 141);">Registration Here!</h2>
+                </div><br><br><br>
+                        <div class="col-lg-10" >
+                            <div class="card" style="background-color:rgb(18, 110, 141) ;">
+                                <div class="card-body">
+                                <form class="mt-1 mb-1 login-input" method="post" enctype="multipart/form-data" onsubmit='return loginvalidation();' name='myform'>
+                                    {% csrf_token %}
+                                <!-- Email input -->
+                            <div class="row">
+                                <div class="col-6">
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form1Example1">Full Name:</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Enter Name" />
+                                    
+                                </div>
+                                </div>
+                                    
+                                <div class="col-6">
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="form1Example1">Email address:</label>
+                                        <input type="email" id="form1Example1" name="email" placeholder="Enter Email" class="form-control" />
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                                <!-- <div class="form-outline mb-4">
+                                    <label class="form-label" for="form1Example1">Licence:</label>
+                                    
+                                    
+                                </div> -->
+                                    
+                            <div class="row">
+                                
+                            
+                                <div class="col-6">
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form1Example1">Contact:</label>
+                                    <input type="number" id="form1Example1" name="contact" class="form-control" placeholder="Enter Contact" />
+                                    
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <!-- Password input -->
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form1Example2">Password:</label>
+                                    <input type="password" id="form1Example2" name="password" class="form-control" placeholder="Create Password" />
+                                    
+                                </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">      
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="form1Example1">License Plate:</label>
+                                        <input type="file" accept="image/" name="license" id="imgInp" class="form-control"  /><br><br>
+                                        <label class="form-label" for="form1Example1">Plate:</label><br>
+                                        <img id="blah" src="{% static 'user/images/carsocial(1).svg' %}" alt="Select a Licence plate" style="height:100px ;border-radius: 15px;" />
+                                    </div>
+                                </div>
+                                <div class="col-6">      
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="form1Example1">Choose Profile</label>
+                                        <input type="file" accept="image/" name="photo" class="form-control"  /><br><br>
+                                        
+                                    </div>
+                                </div>
+                                
+                                
+                            </div>
+                            <div class="row mb-4" >
+                                <div class="col-6">
+                                    <div class="card-body">
+                                        <h4 class="card-title">How Would you like to be contacted ?</h4>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" name="contact1" type="checkbox" id="inlineCheckbox1"
+                                                value="email">
+                                            <label class="form-check-label" for="inlineCheckbox1">Email</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" name="contact2" type="checkbox" id="inlineCheckbox2"
+                                                value="sms" >
+                                            <label class="form-check-label" for="inlineCheckbox2">Sms</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" name="contact3" type="checkbox" id="inlineCheckbox3" 
+                                                value="call" >
+                                            <label class="form-check-label" for="inlineCheckbox3">Call</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Do you want your details visibal ?</h4>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="visibal"
+                                                id="inlineRadio1" value="yes">
+                                            <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="visibal"
+                                                id="inlineRadio2" value="no">
+                                            <label class="form-check-label" for="inlineRadio2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <!-- 2 column grid layout for inline styling -->
+                                <div class="row mb-4 justify-content-center">
+                                    <button type="submit" class=" col-lg-4 btn btn-info  text-black" style="background-color: rgb(85, 213, 213);width: 20%;">Register</button>
+                                </div>
+                                <div class="row justify-content-center" style="padding-left: 7%;">
+                                    <div class="col-2 " >
+                                        <a href="{% url 'home_user_login' %}" class="" style="color: rgb(85, 213, 213);">Sign in</a>
+
+                                    </div>
+                                </div>
+                                <!-- Submit button -->
+                                    
+                                
+                            </div>
+                        </div>
+                            </form>
+                        
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <footer id="newsletter">
+        <div class="container" style="padding-left: 25%;">
+          
+        <div class="row justify-content-center" >
+            
+            
+              <div class="col-lg-8 gfg align-content-center" >
+                <p class="text-black">Copyright © 2023. All rights reserved.<br><br>
+                    Designed and Developed By: <a href="www.linkedin.com/in/thatikonda-pooja-76b2132ba" target="_blank">Poojathatikonda</a>
+                 </p>
+              
+              </div>
+            
+          
+        </div>
+    </footer>
+
+
+
+
+
+    <!-- Scripts -->
+    <script src="{% static 'home/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'home/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'home/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'home/js/animation.js' %}"></script>
+    <script src="{% static 'home/js/imagesloaded.js' %}"></script>
+    <script src="{% static 'home/js/popup.js' %}"></script>
+      <script src="{% static 'home/js/custom.js' %}"></script>
+
+    <script>
+        imgInp.onchange = evt => {
+            const [file] = imgInp.files
+            if (file) {
+              blah.src = URL.createObjectURL(file)
+            }
+          }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,463 @@
+<div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar" data-navbarbg="skin6">
+            <nav class="navbar top-navbar navbar-expand-md">
+                <div class="navbar-header" data-logobg="skin6">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                            class="ti-menu ti-close"></i></a>
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <div class="navbar-brand">
+                        <!-- Logo icon -->
+                        <a href="admin-index.html">
+                            <b class="logo-icon">
+                                <!-- Dark Logo icon -->
+                                <img src="assets/images/Web/icons8-car-48.png" alt="homepage" class="dark-logo" />
+                                <!-- Light Logo icon -->
+
+                            </b>
+                            <!--End Logo icon -->
+                            <!-- Logo text -->
+                            <span class="sidebar-link"
+                                style="font-style:hellvatica;font-size: 90%;color: rgb(148, 141, 213);">
+                                <!-- dark Logo text -->
+                                <img src="assets/images/carsocial.svg" style="height:21px;" alt="">
+                                <!-- Light Logo text -->
+
+                            </span>
+                        </a>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- End Logo -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Toggle which is visible on mobile only -->
+                    <!-- ============================================================== -->
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                        data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
+                            class="ti-more"></i></a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav float-left mr-auto ml-3 pl-1">
+                        <!-- Notification -->
+
+                        <!-- End Notification -->
+                        <!-- ============================================================== -->
+                        <!-- create new -->
+                        <!-- ============================================================== -->
+
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- Right side toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav float-left">
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
+                        <li class="row justify-content-center nav-item d-none d-md-block">
+                            <a class="nav-link" href="javascript:void(0)">
+                                <form>
+                                    <div class="customize-input">
+                                        <input class="form-control custom-shadow custom-radius border-0 bg-white"
+                                            type="search" placeholder="Search" aria-label="Search">
+                                        <i class="form-control-icon" data-feather="search"></i>
+                                    </div>
+                                </form>
+                            </a>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- User profile and search -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <img src="assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
+                                    width="40">
+                                <span class="ml-2 d-none d-lg-inline-block"><span
+                                        class="text-dark">Admin</span> <i data-feather="chevron-down"
+                                        class="svg-icon"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
+                                
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="../home/home-admin-index.html"><i data-feather="power"
+                                        class="svg-icon mr-2 ml-1"></i>
+                                    Logout</a>
+                                
+                            </div>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- User profile and search -->
+                        <!-- ============================================================== -->
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar" data-sidebarbg="skin6">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar" data-sidebarbg="skin6">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="admin-index.html"
+                                aria-expanded="false"><i data-feather="home" class="feather-icon"></i><span
+                                    class="hide-menu">Dashboard</span></a></li>
+                        <!-- <li class="list-divider"></li>
+                        <li class="nav-small-cap"><span class="hide-menu">Applications</span></li>
+
+                        <li class="sidebar-item"> <a class="sidebar-link" href="ticket-list.html"
+                                aria-expanded="false"><i data-feather="tag" class="feather-icon"></i><span
+                                    class="hide-menu">Ticket List
+                                </span></a>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-chat.html"
+                                aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span
+                                    class="hide-menu">Chat</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-calendar.html"
+                                aria-expanded="false"><i data-feather="calendar" class="feather-icon"></i><span
+                                    class="hide-menu">Calendar</span></a></li>
+
+                        <li class="list-divider"></li> -->
+                        <!-- <li class="nav-small-cap"><span class="hide-menu">Components</span></li> -->
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                                aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
+                                    class="hide-menu">User Management</span></a>
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item"><a href="admin-pening-users.html" class="sidebar-link"><span
+                                            class="hide-menu"> Pending Users
+                                        </span></a>
+                                </li>
+                                <li class="sidebar-item"><a href="admin-all-users.html" class="sidebar-link"><span
+                                            class="hide-menu"> All Users
+                                        </span></a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                                aria-expanded="false"><i class="fas fa-exchange-alt"></i><span class="hide-menu">Car
+                                    Social Network</span></a>
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item"><a href="admin-interactions.html" class="sidebar-link"><span
+                                            class="hide-menu">
+                                            Interactions
+                                        </span></a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                                aria-expanded="false"><i data-feather="bar-chart" class="feather-icon"></i><span
+                                    class="hide-menu">Feedback Management</span></a>
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item"><a href="admin-user-feedback.html" class="sidebar-link"><span
+                                            class="hide-menu"> User Feedback
+                                        </span></a>
+                                </li>
+                                <li class="sidebar-item"><a href="admin-sentiment-analysis.html"
+                                        class="sidebar-link"><span class="hide-menu"> Sentiment Analysis
+                                        </span></a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+
+
+
+
+                        <!-- <li class="list-divider"></li>
+                        <li class="nav-small-cap"><span class="hide-menu">Extra</span></li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="docs/docs.html"
+                                aria-expanded="false"><i data-feather="edit-3" class="feather-icon"></i><span
+                                    class="hide-menu">Documentation</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication-login1.html"
+                                aria-expanded="false"><i data-feather="log-out" class="feather-icon"></i><span
+                                    class="hide-menu">Logout</span></a></li> -->
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-7 align-self-center">
+                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Feedback Management</h4>
+                        <div class="d-flex align-items-center">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb m-0 p-0">
+                                    <li class="breadcrumb-item"><a href="admin-index.html" class="text-muted">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item text-muted active" aria-current="page">User Feedback</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <div class="row">
+
+
+
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">User Feedback</h4>
+
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Profile</th>
+                                            <th scope="col">Full Name</th>
+                                            <th scope="col">licence plate number</th>
+                                            <th scope="col">Total Reviews</th>
+                                            <th scope="col">Ratings</th>
+                                            <th scope="col">Review</th>
+                                            <th scope="col">Review Sentiment</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th><img src="assets/images/users/profile-pic.jpg" alt="user"
+                                                    class="rounded-circle" width="40"></th>
+                                            <td>Mark</td>
+                                            <td>asdasd123as</td>
+                                            <td>2</td>
+                                            <td>
+
+                                                <div
+                                                    class="starrating risingstar d-flex justify-content-center flex-row-reverse">
+                                                    <input type="radio" id="star5" name="rating" value="5" /><label
+                                                        for="star5" title="5 star"></label>
+                                                    <input type="radio" id="star4" name="rating" value="4" /><label
+                                                        for="star4" title="4 star"></label>
+                                                    <input type="radio" id="star3" name="rating" value="3" /><label
+                                                        for="star3" title="3 star"></label>
+                                                    <input type="radio" id="star2" name="rating" value="2" /><label
+                                                        for="star2" title="2 star"></label>
+                                                    <input type="radio" id="star1" name="rating" value="1" /><label
+                                                        for="star1" title="1 star"></label>
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                average driving
+                                            </td>
+
+                                            <td>nutral</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- ============================================================== -->
+                <!-- End PAge Content -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Right sidebar -->
+                <!-- ============================================================== -->
+                <!-- .right-sidebar -->
+                <!-- ============================================================== -->
+                <!-- End Right sidebar -->
+                <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="row  footer justify-content-center">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    <p>Copyright © 2023. All rights reserved.<br><br>
+                        Designed and Developed By: <a href="https://www.codebook.in" target="_blank">Codebook</a>
+                     </p>
+                  
+                </div>
+              </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+
+
+
+    #sento
+
+    <script src="{% static 'admin/libs/jquery/dist/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{% static 'admin/libs/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'admin/libs/bootstrap/dist/js/bootstrap.min.js'%}"></script>
+    <!-- apps -->
+    <!-- apps -->
+    <script src="{% static 'admin/dist/js/app-style-switcher.js'%}"></script>
+    <script src="{% static 'admin/dist/js/feather.min.js' %}"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="{% static 'admin/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js' %}"></script>
+    <script src="{% static 'admin/extra-libs/sparkline/sparkline.js' %}"></script>
+    <!--Wave Effects -->
+    <!-- themejs -->
+    <!--Menu sidebar -->
+    <script src="{% static ' admin/dist/js/sidebarmenu.js' %}"></script>
+    <!--Custom JavaScript -->
+    <script src="{% static 'admin/dist/js/custom.min.js' %}"></script>
+    <!-- This Page JS -->
+    <!-- Chart JS -->
+    <script src="{% static 'admin/dist/js/pages/chartjs/chartjs.init.js' %}"></script>
+    <script src="{% static 'admin/libs/chart.js/dist/Chart.min.js'%}"></script>
+
+
+
+
+    ###interactions.html
+
+    <div id="services" class="services section">
+        <div class="row justify-content-center">
+          <h2 class="row justify-content-center" style="color: rgb(18, 110, 141);">My Interactions</h2>
+        </div><br>
+        <div class="container mt-5">
+          <div class="col-lg-12 col-md-2">
+            <div class="card" style="border-radius: 10px;">
+              <div class="card-body" style="background-color: rgb(18, 110, 141);border-radius: 10px;">
+                <div class=" row justify-content-center card-title">
+                  <h4 class="text-light text-center"><i class="fa fa-f"></i>&nbsp;&nbsp;Interactions</h4>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover text-light" style="background-color: rgb(18, 110, 141);">
+                    <thead>
+                      <tr>
+                        <th>Driver Profile</th>
+                        <th>Driver's License</th>
+                        <th>Driver Name</th>
+                        <th>Driver Email</th>
+                        <th>Interaction Type</th>
+                        <th>Message</th>
+    
+                        <th>Date</th>
+    
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in a %}
+                      <tr>
+    
+                        <td>
+                          {% if i.to_user.user_privacy_status == "yes" %}
+                          <img src="media/{{i.to_user.user_photo}}" style="height:50px ;width:50px;border-radius: 25px;"
+                            alt="">
+                          {% else %}
+                          Private
+                          {% endif %}
+                        </td>
+                        <td>{{i.to_user.user_license}}</td>
+                        <td>
+                          {% if i.to_user.user_privacy_status == "yes" %}
+                          {{i.to_user.user_name}}
+                          {% else %}
+                          Private
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if i.to_user.user_privacy_status == "yes" %}
+                          {{i.to_user.user_email}}
+                          {% else %}
+                          Private
+                          {% endif %}
+                        </td>
+                        <td>{{i.interac_type}}</td>
+                        <td>
+                          <textarea style="background-color: rgb(18, 110, 141);" cols="30" rows="3">{{i.message}}</textarea>
+                        </td>
+    
+                        <td>{{i.datetime_sent}}</td>
+                        <td>
+                          {% comment %}
+                          <!-- <a href="{% url 'view_files' i.device_id i.device_name %}">
+                                      <label type="button" class="badge badge-primary text-white" style="width: 80px; height: 20px; border-radius: 5px;">View Files</label>
+                                    </a>
+                                      <a href="{% url 'device_delete' i.device_id %}">
+                                      <label type="button" class="badge badge-danger text-white" onclick="return confirm('Are you sure want to remove this device');" style="width: 80px; height: 20px; border-radius: 5px;">Remove</label>
+                                    </a> --> {% endcomment %}
+                        </td>
+    
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+    
+                  </table>
+                </div><br>
+                <nav aria-label="page navigation example" style="margin-left:43%;">
+                  <ul class="pagination ml-2">
+                    {% if a.has_previous %}
+                    <li class="page-item"><a href="?page={{a.previous_page_number}}"
+                        class="page-link bg-info text-white">Prev</a></li>
+                    {% endif %}
+                    &nbsp;&nbsp;<label class="mt-2 text-white">page {{a.number}} of
+                      {{a.paginator.num_pages}}</label>&nbsp;&nbsp;
+                    {% if a.has_next %}
+                    <li class="page-item"><a href="?page={{a.next_page_number}}"
+                        class="page-link bg-info text-white">Next</a></li>
+                    {% endif %}
+                  </ul>
+    
+                </nav><br>
+              </div>
+    
+            </div><br><br>
+    
+            <!-- /# card -->
+          </div>
+        </div>
+      </div>
