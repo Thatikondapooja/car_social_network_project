@@ -9,12 +9,16 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from adminapp.models import *
 from mainapp.models import *
+from userapp.models import UserModel
+
 from userapp.models import *
 import pytesseract
 import PIL.Image
 # import imutils
 import cv2
 import os
+
+
 
 
 # Create your views here.
@@ -69,81 +73,56 @@ def home_user_login(request):
     return render(request,"home/home-user-login.html")
 
 
+
 def home_user_reg(request):
-    
-    if request.method == "POST" and request.FILES["license"] and request.FILES["photo"]:
-        print('posttt')
-        name=request.POST.get("name")
-        email=request.POST.get("email")
-        contact=request.POST.get("contact")
-        password=request.POST.get("password")
-        license=request.FILES["license"]
-        photo=request.FILES["photo"]
-        contact1=request.POST.get("contact1")
-        contact2=request.POST.get("contact2")
-        contact3=request.POST.get("contact3")
-        visibal=request.POST.get("visibal")
-        print(name,email,contact,password,license,photo,contact1,contact2,contact3,visibal,"aasdasdasdasdad")
-
-
-        temp_img=ImgModel.objects.create(image=license)
-        temp_img.save()
-        
-        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-        os.environ['TESSDATA_PREFIX'] = r'C:\Program Files\Tesseract-OCR\tessdata'
-
-
-
-
-
-        path=str(license)
-        print(path,'ttgytg')
-
-        image = cv2.imread('media/temp_img/'+path)
-        print(image,'232323434')
-        # image resizing  
-        resize = cv2.resize(  
-            image, None, fx = 2, fy = 2,   
-            interpolation = cv2.INTER_CUBIC) 
-             
-        
-        # converting image to grayscale  
-        gray = cv2.cvtColor(  
-            resize, cv2.COLOR_BGR2GRAY)  
-        
-        # denoising the image  
-        blur = cv2.GaussianBlur(  
-            gray, (5, 5), 0) 
-
-
-        #tesseract
-        plate_number = pytesseract.image_to_string(blur, lang ='eng')  
-        license_no = "".join(plate_number.split()).replace(":", "").replace("—", "").replace("|SS", "").replace("|", "").replace("Wea", "").replace("=»'", "").replace(")", "").replace("I", "")
-        print(license_no,'success')
-
-
-        #user registeration part
+    if request.method == "POST":
         try:
-            s1=UserModel.objects.get(user_license=license_no)
-            messages.info(request,"License already exists,try again with another license")
-        except:
+            name = request.POST.get("name")
+            email = request.POST.get("email")
+            contact = request.POST.get("contact")
+            password = request.POST.get("password")
+            license_img = request.FILES.get("license")   # ✅ SAFE
+            photo = request.FILES.get("photo")           # ✅ SAFE
 
-        
-            reg=UserModel.objects.create(user_name=name,user_email=email,user_password=password,user_contact=contact,user_license=license_no,user_photo=photo,user_email_status=contact1,user_sms_status=contact2,user_call_status=contact3,user_privacy_status=visibal)
-            reg.save()
-            
-            if reg:
-                messages.success(request,"Registration successful")
-                return redirect('home_user_reg')
-            else:
-                messages.error(request,"invalid details ,try again")
-                return redirect('home_user_reg')
+            contact1 = request.POST.get("contact1")
+            contact2 = request.POST.get("contact2")
+            contact3 = request.POST.get("contact3")
+            visibal = request.POST.get("visibal")
 
+            # 🔐 Validation (prevents 500)
+            if not all([name, email, contact, password, license_img, photo]):
+                messages.error(request, "All fields are required")
+                return redirect("home_user_reg")
 
+            # 🚫 Duplicate email check
+            if UserModel.objects.filter(user_email=email).exists():
+                messages.error(request, "Email already registered")
+                return redirect("home_user_reg")
 
-    return render(request,"home/home-user-reg.html")
+            # ✅ Create user
+            UserModel.objects.create(
+                user_name=name,
+                user_email=email,
+                user_contact=contact,
+                user_password=password,
+                user_license=license_img,
+                user_photo=photo,
+                user_contact_email=contact1,
+                user_contact_sms=contact2,
+                user_contact_call=contact3,
+                user_privacy_status=visibal,
+                user_status="pending"
+            )
 
+            messages.success(request, "Registered Successfully! Await admin approval.")
+            return redirect("home_user_login")
 
+        except Exception as e:
+            print("REGISTER ERROR:", e)  # 👈 shows exact error in Render logs
+            messages.error(request, "Something went wrong")
+            return redirect("home_user_reg")
+
+    return render(request, "home/home-user-reg.html")
 
 def about(request):
     return render(request,"home/about.html")
