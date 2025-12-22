@@ -68,12 +68,27 @@ WSGI_APPLICATION = "car_social_network.wsgi.application"
 # =========================
 
 # ✅ Use SQLite for LOCAL + Render (TEMP SAFE)
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+# DATABASE CONFIGURATION
+
+if os.environ.get("RENDER"):  # Render deployment
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:  # Local development
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "car_social_network",
+            "USER": "root",
+            "PASSWORD": "root",
+            "HOST": "localhost",
+            "PORT": "3306",
+        }
+    }
+
 
 # =========================
 # PASSWORD VALIDATION
