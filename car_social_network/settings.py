@@ -1,22 +1,15 @@
 import os
 from pathlib import Path
-
-# 👉 IMPORTANT: Fix MySQLdb error for local MySQL
 import pymysql
+
 pymysql.install_as_MySQLdb()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# =========================
-# SECURITY
-# =========================
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-dev-secret-key")
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = ["*"]
 
-# =========================
-# APPLICATIONS
-# =========================
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -30,9 +23,6 @@ INSTALLED_APPS = [
     "userapp",
 ]
 
-# =========================
-# MIDDLEWARE
-# =========================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -46,9 +36,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "car_social_network.urls"
 
-# =========================
-# TEMPLATES
-# =========================
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -67,12 +54,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "car_social_network.wsgi.application"
 
-# =========================
-# DATABASE CONFIG (CRITICAL)
-# =========================
-# ✔ Render → SQLite
-# ✔ Local → MySQL
-
+# DATABASE
 USE_SQLITE = os.environ.get("RENDER") or os.environ.get("USE_SQLITE")
 
 if USE_SQLITE:
@@ -94,52 +76,28 @@ else:
         }
     }
 
-
-# =========================
-# PASSWORD VALIDATION
-# =========================
-AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
-]
-
-# =========================
-# INTERNATIONALIZATION
-# =========================
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# =========================
-# STATIC FILES
-# =========================
+# STATIC FILES (CRITICAL FIX)
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "assets/static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# =========================
-# MEDIA FILES
-# =========================
+# MEDIA
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# =========================
-# EMAIL CONFIG (FIXES DEFAULT_FROM_EMAIL ERROR)
-# =========================
-EMAIL_BACKEND = os.environ.get(
-    "EMAIL_BACKEND",
-    "django.core.mail.backends.smtp.EmailBackend",
-)
-
+# EMAIL
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
 EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
