@@ -291,8 +291,14 @@
                                     <tbody>
                                         {% for i in all %}
                                         <tr>
-                                            <th><img src="media/{{i.user_photo}}" alt="user" class="rounded-circle"
-                                                width="50" height="50"></th>
+                                        <th>
+                                            {% if i.user_photo %}
+                                            <img src="{{ i.user_photo.url }}" alt="user" class="rounded-circle" width="50" height="50">
+                                            {% else %}
+                                            <img src="{% static 'admin/images/users/profile-pic.jpg' %}" width="50" height="50">
+                                            {% endif %}
+                                        </th>
+
                                             <td>{{i.user_name}}</td>
                                             <td>{{i.user_email}}</td>
                                             <td>{{i.user_contact}}</td>
