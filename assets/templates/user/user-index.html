@@ -59,27 +59,18 @@ https://templatemo.com/tm-570-chain-app-dev
   
     {% comment %} javaScript validation {% endcomment %}
 
-    <script type="text/javascript">
-        function loginvalidation() {
-            var license = document.myform.license
-            
-            
-            
-            
+   <script>
+    function loginvalidation() {
+      var licenseFile = document.myform.license.value;
+      var plateText = document.myform.plate_text.value;
 
-             
-            if (license.value.length <= 0) {
-                alert("Please select a license plate")
-                license.focus();
-                return false;
-            }
-            
-          
-            
-        }   
-</script>
-
-
+      if (licenseFile.length === 0 && plateText.length === 0) {
+        alert("Please upload license image OR enter license number");
+        return false;
+      }
+      return true;
+    }
+  </script>
 
   {% csrf_token %}
   {% if messages %}
@@ -288,6 +279,14 @@ https://templatemo.com/tm-570-chain-app-dev
         </div><br><br><br>
       <form method="post" enctype="multipart/form-data" onsubmit='return loginvalidation();' name='myform'>
           {% csrf_token %}
+          <!-- Manual License Plate Input (IMPORTANT for Production) -->
+          <div class="row gfg" style="margin-left:28%;">
+            <div class="col-lg-6 mb-3">
+              <input type="text" name="plate_text" class="form-control" placeholder="Enter License Plate (e.g. TS09AB1234)"
+                style="text-transform: uppercase;">
+            </div>
+          </div>
+
         <div class="row  gfg" style="margin-left:28% ;">
           <div class="col-lg-6 mb-5">
             <label class="form-label" for="form1Example1"></label>

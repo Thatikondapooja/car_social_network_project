@@ -13,7 +13,7 @@ from userapp.models import UserModel, InteractionModel, FeedbackModel
 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import requests
-
+import shutil
 
 # -------------------------------
 # Utility
@@ -28,21 +28,49 @@ def normalize_plate(text):
 # -------------------------------
 # USER INDEX (CONNECT DRIVER)
 # -------------------------------
+
+
 def user_index(request):
-    driver = None
+    if request.method == "POST":
 
-    if request.method == "POST" and request.FILES.get("license"):
-        plate_file = request.FILES["license"]
+        # 1️⃣ MANUAL INPUT (PRIMARY – WORKS ON RENDER)
+        plate_text = request.POST.get("plate_text", "").strip().upper()
 
-        # ✅ SAFE METHOD (WORKS ON RENDER)
-        # Example: AP09AB1234.jpg → AP09AB1234
-        plate_text = os.path.splitext(plate_file.name)[0]
-        license_no = normalize_plate(plate_text)
+        if plate_text:
+            license_no = normalize_plate(plate_text)
 
-        print("PLATE FROM FILE:", license_no)
+        # 2️⃣ OCR FALLBACK (LOCAL ONLY)
+        elif request.FILES.get("license"):
+            try:
+                plate_img = request.FILES["license"]
 
+                image = cv2.imdecode(
+                    np.frombuffer(plate_img.read(), np.uint8),
+                    cv2.IMREAD_COLOR
+                )
+
+                gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                blur = cv2.GaussianBlur(gray, (5, 5), 0)
+
+                plate_number = pytesseract.image_to_string(
+                    blur,
+                    config="--psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                )
+
+                license_no = normalize_plate(plate_number)
+
+            except Exception as e:
+                print("OCR ERROR:", e)
+                messages.error(request, "Unable to read license plate")
+                return redirect("user_index")
+
+        else:
+            messages.warning(request, "Please enter or upload license plate")
+            return redirect("user_index")
+
+        # 3️⃣ DATABASE MATCH
         driver = UserModel.objects.filter(
-            user_license__icontains=license_no,
+            user_license__iexact=license_no,
             user_status="accepted"
         ).first()
 
@@ -50,8 +78,9 @@ def user_index(request):
             messages.info(request, "No Driver Found With This Plate")
             return redirect("user_index")
 
-    return render(request, "user/user-index.html", {"driver": driver})
+        return render(request, "user/user-index.html", {"driver": driver})
 
+    return render(request, "user/user-index.html")
 
 # -------------------------------
 # USER INTERACTIONS
