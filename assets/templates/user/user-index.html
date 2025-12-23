@@ -18,17 +18,35 @@
   <!-- ================= HEADER ================= -->
   <header class="header-area header-sticky">
     <div class="container">
-      <a href="{% url 'user_index' %}">
-        <img src="{% static 'user/images/carsocial(1).svg' %}" style="height:60px">
-      </a>
+      <div class="row">
+        <div class="col-lg-3">
+          <a href="{% url 'user_index' %}" class="logo">
+            <img src="{% static 'user/images/icons8-car-48.png' %}" height="45">
+            <img src="{% static 'user/images/carsocial(1).svg' %}" height="60">
+          </a>
+        </div>
+
+        <div class="col-lg-9">
+          <nav class="main-nav">
+            <ul class="nav">
+              <li><a href="{% url 'user_index' %}" class="active">Connect</a></li>
+              <li><a href="{% url 'user_interactions' %}">My Interactions</a></li>
+              <li><a href="{% url 'user_profile' %}">My Profile</a></li>
+              <li><a href="{% url 'user_feedback' %}">Feedback</a></li>
+              <li><a href="{% url 'home_index' %}">Logout</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- ================= MESSAGES ================= -->
+  <!-- ================= ALERT MESSAGES ================= -->
   {% if messages %}
   {% for message in messages %}
   <script>
     swal({
+      title: "Status",
       text: "{{ message }}",
       icon: "{{ message.tags }}"
     });
@@ -36,56 +54,74 @@
   {% endfor %}
   {% endif %}
 
-  <!-- ================= SEARCH FORM ================= -->
-  <div class="container mt-5">
-    <h3 class="text-center mb-4">Find Driver by License Plate</h3>
+  <!-- ================= SEARCH SECTION ================= -->
+  <div class="services section">
+    <div class="container">
 
-    <form method="post">
-      {% csrf_token %}
+      <h2 class="text-center mb-4" style="color:#126e8d">
+        Find The Driver Here!
+      </h2>
 
-      <input type="text" name="plate_text" class="form-control mb-3" placeholder="Enter License Plate (e.g. TS09AB1234)"
-        required>
+      <!-- ===== SEARCH FORM ===== -->
+      <form method="post" class="text-center">
+        {% csrf_token %}
 
-      <button class="btn btn-primary w-100">
-        <i class="fa fa-search"></i> Search
-      </button>
-    </form>
-  </div>
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <input type="text" name="plate_text" class="form-control mb-3"
+              placeholder="Enter License Plate (e.g. TS09AB1234)" required>
+          </div>
+        </div>
 
-  <!-- ================= RESULT ================= -->
-  {% if driver %}
-  <div class="container mt-5">
-    <div class="card p-4">
-      <h4>Driver Details</h4>
-      <hr>
+        <button class="btn btn-primary">
+          <i class="fa fa-search"></i> Search
+        </button>
+      </form>
 
-      {% if driver.user_privacy_status == "yes" %}
-      <p><b>Name:</b> {{ driver.user_name }}</p>
-      <p><b>Email:</b> {{ driver.user_email }}</p>
-      <p><b>Contact:</b> {{ driver.user_contact }}</p>
-      {% else %}
-      <p><b>License No:</b> {{ driver.user_license }}</p>
-      <p class="text-danger">Privacy Enabled</p>
+      <!-- ================= RESULT CARD ================= -->
+      {% if driver %}
+      <div class="row justify-content-center mt-5">
+        <div class="col-lg-8">
+          <div class="card p-4" style="background:#126e8d;color:white">
+
+            <h4>Driver Details</h4>
+            <hr>
+
+            {% if driver.user_privacy_status == "yes" %}
+            <p><b>Name:</b> {{ driver.user_name }}</p>
+            <p><b>Email:</b> {{ driver.user_email }}</p>
+            <p><b>Contact:</b> {{ driver.user_contact }}</p>
+            {% else %}
+            <p>Driver details are private</p>
+            {% endif %}
+
+            <p><b>License:</b> {{ driver.user_license }}</p>
+
+            <hr>
+
+            <h5>Connect</h5>
+
+            {% if driver.user_email_status == "email" %}
+            <a href="{% url 'contact_email' driver.user_id 'email' %}" class="btn btn-light mb-2">Email</a>
+            {% endif %}
+
+            {% if driver.user_sms_status == "sms" %}
+            <a href="{% url 'contact_email' driver.user_id 'sms' %}" class="btn btn-light mb-2">SMS</a>
+            {% endif %}
+
+            {% if driver.user_call_status == "call" %}
+            <a href="{% url 'contact_call' driver.user_id 'call' %}" class="btn btn-light mb-2">Call</a>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
       {% endif %}
 
-      <hr>
-      <h5>Connect</h5>
-
-      {% if driver.user_email_status == "email" %}
-      <a href="{% url 'contact_email' driver.user_id 'email' %}" class="btn btn-outline-primary mb-2">Email</a>
-      {% endif %}
-
-      {% if driver.user_sms_status == "sms" %}
-      <a href="{% url 'contact_email' driver.user_id 'sms' %}" class="btn btn-outline-success mb-2">SMS</a>
-      {% endif %}
-
-      {% if driver.user_call_status == "call" %}
-      <a href="{% url 'contact_call' driver.user_id 'call' %}" class="btn btn-outline-danger mb-2">Call</a>
-      {% endif %}
     </div>
   </div>
-  {% endif %}
 
+  <script src="{% static 'user/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 
 </html>
