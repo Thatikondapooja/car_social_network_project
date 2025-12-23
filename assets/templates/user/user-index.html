@@ -62,12 +62,14 @@ https://templatemo.com/tm-570-chain-app-dev
    <script>
     function loginvalidation() {
       var licenseFile = document.myform.license.value;
-      var plateText = document.myform.plate_text.value;
+    var plate = document.myform.plate_text;
 
-      if (licenseFile.length === 0 && plateText.length === 0) {
-        alert("Please upload license image OR enter license number");
+      if (plate.value.trim().length === 0) {
+        alert("Please enter license plate");
+        plate.focus();
         return false;
       }
+
       return true;
     }
   </script>
@@ -277,15 +279,26 @@ https://templatemo.com/tm-570-chain-app-dev
         <div class="row justify-content-center">
           <h2 class="row justify-content-center gfg" style="color: rgb(18, 110, 141);" a>Find The Driver Here!</h2>
         </div><br><br><br>
-      <form method="post" enctype="multipart/form-data" onsubmit='return loginvalidation();' name='myform'>
-          {% csrf_token %}
-          <!-- Manual License Plate Input (IMPORTANT for Production) -->
-          <div class="row gfg" style="margin-left:28%;">
-            <div class="col-lg-6 mb-3">
-              <input type="text" name="plate_text" class="form-control" placeholder="Enter License Plate (e.g. TS09AB1234)"
-                style="text-transform: uppercase;">
-            </div>
-          </div>
+    <form method="post" onsubmit="return loginvalidation();" name="myform">
+      {% csrf_token %}
+    
+      <div class="row gfg" style="margin-left:28%;">
+    
+        <!-- 🔹 NEW INPUT FIELD -->
+        <div class="col-lg-6 mb-3">
+          <input type="text" name="plate_text" class="form-control" placeholder="Enter License Plate (e.g. TS09AB1234)"
+            required>
+        </div>
+    
+        <!-- 🔹 SEARCH BUTTON -->
+        <div class="col-lg-2">
+          <button class="btn btn-primary mt-1">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+    
+      </div>
+    </form>
 
         <div class="row  gfg" style="margin-left:28% ;">
           <div class="col-lg-6 mb-5">
@@ -293,7 +306,7 @@ https://templatemo.com/tm-570-chain-app-dev
             <span class="">
               <!-- <input type="file" accept="image/" id="imgIn" class="form-control"> -->
 
-              <input type="file" name="license" accept="image/" id="imgInp" class="form-control">
+              <!-- <input type="file" name="license" accept="image/" id="imgInp" class="form-control"> -->
 
             </span>
           </div>

@@ -1,7 +1,6 @@
 import re
 import os
-import cv2
-import numpy as np
+
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -14,6 +13,7 @@ from userapp.models import UserModel, InteractionModel, FeedbackModel
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import requests
 import shutil
+
 
 # -------------------------------
 # Utility
@@ -29,46 +29,22 @@ def normalize_plate(text):
 # USER INDEX (CONNECT DRIVER)
 # -------------------------------
 
+def normalize_plate(text):
+    text = text.upper()
+    text = re.sub(r'[^A-Z0-9]', '', text)
+    return text
+
 
 def user_index(request):
     if request.method == "POST":
+        plate_text = request.POST.get("plate_text")
 
-        # 1️⃣ MANUAL INPUT (PRIMARY – WORKS ON RENDER)
-        plate_text = request.POST.get("plate_text", "").strip().upper()
-
-        if plate_text:
-            license_no = normalize_plate(plate_text)
-
-        # 2️⃣ OCR FALLBACK (LOCAL ONLY)
-        elif request.FILES.get("license"):
-            try:
-                plate_img = request.FILES["license"]
-
-                image = cv2.imdecode(
-                    np.frombuffer(plate_img.read(), np.uint8),
-                    cv2.IMREAD_COLOR
-                )
-
-                gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-                blur = cv2.GaussianBlur(gray, (5, 5), 0)
-
-                plate_number = pytesseract.image_to_string(
-                    blur,
-                    config="--psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-                )
-
-                license_no = normalize_plate(plate_number)
-
-            except Exception as e:
-                print("OCR ERROR:", e)
-                messages.error(request, "Unable to read license plate")
-                return redirect("user_index")
-
-        else:
-            messages.warning(request, "Please enter or upload license plate")
+        if not plate_text:
+            messages.error(request, "Please enter a license plate number")
             return redirect("user_index")
 
-        # 3️⃣ DATABASE MATCH
+        license_no = normalize_plate(plate_text)
+
         driver = UserModel.objects.filter(
             user_license__iexact=license_no,
             user_status="accepted"
