@@ -279,19 +279,23 @@ https://templatemo.com/tm-570-chain-app-dev
         <div class="row justify-content-center">
           <h2 class="row justify-content-center gfg" style="color: rgb(18, 110, 141);" a>Find The Driver Here!</h2>
         </div><br><br><br>
-    <form method="post" enctype="multipart/form-data" name="myform">
-      {% csrf_token %}
-    
-      <!-- NEW: Manual plate input -->
-      <input type="text" name="plate_text" class="form-control mb-3" placeholder="Enter License Plate (e.g. TS09AB1234)">
-    
-      <!-- Existing image upload (optional now) -->
-      <input type="file" name="license" accept="image/" class="form-control mb-3">
-    
-      <button class="btn btn-primary mt-3">
-        <i class="fa fa-search"></i> Search
-      </button>
-    </form>
+  <form method="post">
+    {% csrf_token %}
+  
+    <div class="row gfg" style="margin-left:28%;">
+      <div class="col-lg-6 mb-3">
+        <input type="text" name="plate_text" class="form-control" placeholder="Enter License Plate (e.g. TS09AB1234)"
+          required>
+      </div>
+  
+      <div class="col-lg-2">
+        <button class="btn btn-primary mt-1">
+          <i class="fa fa-search"></i> Search
+        </button>
+      </div>
+    </div>
+  </form>
+
 
         <div class="row  gfg" style="margin-left:28% ;">
           <div class="col-lg-6 mb-5">

@@ -32,8 +32,6 @@ def normalize_plate(text):
 # -----------------------------
 
 def normalize_plate(text):
-    if not text:
-        return ""
     text = text.upper()
     text = re.sub(r'[^A-Z0-9]', '', text)
     return text
@@ -43,21 +41,16 @@ def user_index(request):
     driver = None
 
     if request.method == "POST":
-        # 1️⃣ Manual input (production-safe)
         plate_text = request.POST.get("plate_text", "").strip()
-        license_no = normalize_plate(plate_text)
 
-        # 2️⃣ OPTIONAL fallback: image filename
-        if not license_no and request.FILES.get("license"):
-            license_no = normalize_plate(request.FILES["license"].name)
-
-        if not license_no:
+        if not plate_text:
             messages.error(request, "Please enter license plate number")
             return redirect("user_index")
 
-        # 3️⃣ Database lookup
+        plate_text = normalize_plate(plate_text)
+
         driver = UserModel.objects.filter(
-            user_license__iexact=license_no,
+            user_license__iexact=plate_text,
             user_status="accepted"
         ).first()
 
