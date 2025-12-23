@@ -24,67 +24,51 @@ from django.core.paginator import Paginator
 
 
 def user_index(request):
-    
-    if request.method == "POST" and request.FILES["license"]:
-        
-        plate_img=request.FILES["license"]
-        
+    if request.method == "POST" and request.FILES.get("license"):
+        plate_img = request.FILES["license"]
 
-        #License plate number is extracted from image here!
-        # temp_img=ImgModel.objects.create(image=plate_img)
-        # temp_img.save()
-        
-        pytesseract.pytesseract.tesseract_cmd=r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+        pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"  # Render path
 
+        image = cv2.imdecode(
+            np.frombuffer(plate_img.read(), np.uint8),
+            cv2.IMREAD_COLOR
+        )
 
+        try:
+            resize = cv2.resize(image, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
+            gray = cv2.cvtColor(resize, cv2.COLOR_BGR2GRAY)
+            blur = cv2.GaussianBlur(gray, (5, 5), 0)
 
+            plate_number = pytesseract.image_to_string(
+                blur,
+                config="--psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            )
 
+            license_no = (
+                plate_number.upper()
+                .replace("\n", "")
+                .replace(" ", "")
+                .replace("-", "")
+            )
 
-        path=str(plate_img)
-        
+            print("OCR:", license_no)
 
-        image = cv2.imread('media/temp_img/'+path)
-        
-        # image resizing
-        try:  
-            resize = cv2.resize(  
-                image, None, fx = 2, fy = 2,   
-                interpolation = cv2.INTER_CUBIC) 
-                
-            
-            # converting image to grayscale  
-            gray = cv2.cvtColor(  
-                resize, cv2.COLOR_BGR2GRAY)  
-            
-            # denoising the image  
-            blur = cv2.GaussianBlur(  
-                gray, (5, 5), 0) 
+            driver = UserModel.objects.filter(
+                user_license__iexact=license_no,
+                user_status="accepted"
+            ).first()
 
+            if not driver:
+                messages.info(request, "No Driver Found With This Plate")
+                return redirect("user_index")
 
-            #tesseract
-            plate_number = pytesseract.image_to_string(blur, lang ='eng')  
-            license_no = "".join(plate_number.split()).replace(":", "").replace("—", "").replace("|SS", "").replace("|", "").replace("Wea", "").replace("=»'", "").replace(")", "").replace("I", "").replace("_", "").replace("-", "").replace("(", "").replace("‘", "")
-            
+            return render(request, "user/user-index.html", {"driver": driver})
 
+        except Exception as e:
+            print("OCR ERROR:", e)
+            messages.error(request, "Unable to read license plate")
 
-            try:
-                driver = UserModel.objects.get(user_license= license_no) 
-                
-                # return redirect('user_index')
-            except:
-                messages.info(request, 'No Driver Found')
-                return redirect('user_index')
-            return render(request,"user/user-index.html",{'driver':driver})
-        except:
-            messages.info(request, 'No Driver Found With This Plate')
-    return render(request,"user/user-index.html")
-
-
-# def user_com(request):
-#     if request.method =="POST":
-#         message=request.POST.get("message")
-#         print(message,"comm message")
-#     return render(request,"user/user-com.html")
+    return render(request, "user/user-index.html")
 
 
 def user_interactions(request):
