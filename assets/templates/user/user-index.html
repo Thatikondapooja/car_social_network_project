@@ -282,23 +282,17 @@ https://templatemo.com/tm-570-chain-app-dev
     <form method="post" enctype="multipart/form-data" name="myform">
       {% csrf_token %}
     
-      <!-- MANUAL PLATE INPUT (PRODUCTION SAFE) -->
-      <input type="text" name="plate_text" class="form-control mb-3" placeholder="Enter License Plate (e.g. TS09AB1234)"
-        style="width: 60%; margin-left:28%;" />
+      <!-- NEW: Manual plate input -->
+      <input type="text" name="plate_text" class="form-control mb-3" placeholder="Enter License Plate (e.g. TS09AB1234)">
     
-      <!-- IMAGE INPUT (OPTIONAL – LOCAL OCR) -->
-      <div class="row gfg" style="margin-left:28%;">
-        <div class="col-lg-6 mb-4">
-          <input type="file" name="license" accept="image/*" id="imgInp" class="form-control">
-        </div>
+      <!-- Existing image upload (optional now) -->
+      <input type="file" name="license" accept="image/" class="form-control mb-3">
     
-        <div class="col-lg-2">
-          <button type="submit" class="btn btn-primary mt-1" style="height:40px;">
-            <i class="fa fa-search"></i>
-          </button>
-        </div>
-      </div>
+      <button class="btn btn-primary mt-3">
+        <i class="fa fa-search"></i> Search
+      </button>
     </form>
+
         <div class="row  gfg" style="margin-left:28% ;">
           <div class="col-lg-6 mb-5">
             <label class="form-label" for="form1Example1"></label>
@@ -309,13 +303,7 @@ https://templatemo.com/tm-570-chain-app-dev
 
             </span>
           </div>
-          <span class="col-lg-6">
-
-            <button class="btn btn-primary colour mt-4" style="background-colour:rgb(18, 110, 141);height:32%;"><i class="fa fa-search"></i></button>
-            <!-- Modal -->
-
-          </span>
-
+         
         </div>
       </form>
         <br>

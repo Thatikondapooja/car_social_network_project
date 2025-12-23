@@ -29,48 +29,35 @@ def normalize_plate(text):
 
 # -------------------------------
 # USER INDEX (CONNECT DRIVER)
-# ------------------------------
+# -----------------------------
 
 def normalize_plate(text):
+    if not text:
+        return ""
     text = text.upper()
-    return re.sub(r'[^A-Z0-9]', '', text)
+    text = re.sub(r'[^A-Z0-9]', '', text)
+    return text
 
 
 def user_index(request):
     driver = None
 
     if request.method == "POST":
-
-        # 1️⃣ MANUAL INPUT (PRODUCTION)
+        # 1️⃣ Manual input (production-safe)
         plate_text = request.POST.get("plate_text", "").strip()
+        license_no = normalize_plate(plate_text)
 
-        # 2️⃣ OCR (LOCAL ONLY)
-        if not plate_text and request.FILES.get("license"):
-            try:
-                image_file = request.FILES["license"]
-                image = cv2.imdecode(
-                    np.frombuffer(image_file.read(), np.uint8),
-                    cv2.IMREAD_COLOR
-                )
+        # 2️⃣ OPTIONAL fallback: image filename
+        if not license_no and request.FILES.get("license"):
+            license_no = normalize_plate(request.FILES["license"].name)
 
-                gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-                plate_text = pytesseract.image_to_string(
-                    gray,
-                    config="--psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-                )
-
-            except Exception as e:
-                print("OCR ERROR:", e)
-
-        plate_text = normalize_plate(plate_text)
-
-        if not plate_text:
+        if not license_no:
             messages.error(request, "Please enter license plate number")
             return redirect("user_index")
 
-        # 🔍 DATABASE SEARCH
+        # 3️⃣ Database lookup
         driver = UserModel.objects.filter(
-            user_license__iexact=plate_text,
+            user_license__iexact=license_no,
             user_status="accepted"
         ).first()
 

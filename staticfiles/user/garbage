@@ -1,0 +1,171 @@
+<div class="container">
+
+      <div class="row justify-content-center">
+        <div class="row justify-content-center">
+          <h2 class="row justify-content-center" style="color: rgb(188, 155, 176);">Add Driver's Review</h2>
+        </div><br><br><br>
+        <div class="row justify-content-center" style="padding-left:85px;">
+          <div class="col-6 mb-5">
+            <label class="form-label" for="form1Example1"></label>
+            <div class="">
+              <!-- <input type="file" accept="image/" id="imgIn" class="form-control"> -->
+
+              <input type="file" accept="image/" id="imgInp" class="form-control">
+
+            </div>
+          </div>
+          <div class="col-2">
+
+            <button class="btn btn-primary colour mt-4" style="height:32%;"><i class="fa fa-search"></i></button>
+            <!-- Modal -->
+
+          </div>
+
+        </div>
+
+        <br>
+        <br>
+        <div class="col-8">
+          <div class="card " style="background-color:rgb(188, 155, 176) ;">
+            <div class="card-body">
+              <form>
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form1Example1">License Plate:</label><br>
+                  <img class="mx-5" id="blah" src="#" alt="Select a License plate"
+                    style="height:250px;width: 600px ;border-radius: 15px;" />
+
+                </div>
+                <hr class="solid">
+                <!-- Password input -->
+                <form action="">
+                    <div class="row mb-5">
+                        <div class="col-3">
+                            <label for="">Select Ratings:</label>
+                        </div>
+                        <div class="col-6">
+                            <div class="starrating risingstar d-flex justify-content-end flex-row-reverse">
+
+                                <input type="radio" id="star5" name="rating" value="5" /><label
+                                    for="star5" title="5 star"></label>
+                                <input type="radio" id="star4" name="rating" value="4" /><label
+                                    for="star4" title="4 star"></label>
+                                <input type="radio" id="star3" name="rating" value="3" /><label
+                                    for="star3" title="3 star"></label>
+                                <input type="radio" id="star2" name="rating" value="2" /><label
+                                    for="star2" title="2 star"></label>
+                                <input type="radio" id="star1" name="rating" value="1" /><label
+                                    for="star1" title="1 star"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="">Add Review:</label>
+                        </div>
+                        <div class=" col-6">
+                            <textarea name="review" id="" cols="50" rows="5">Rash Driving</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+          </div>
+
+          <!-- 2 column grid layout for inline styling -->
+
+        </div>
+      </div>
+      </form>
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <div style="margin-top: 50px;">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-8" style="background-image: url(); background-color: rgb(199, 180, 198);">
+                  <div class="row ">
+                      <div class="col-12">
+                          <form class="pt-3" method='post' enctype="multipart/form-data" name='myform'>
+  
+                              <div class="text" style="padding-right:20px;">
+                                  <h1 class="text-center "> <span>My Profile</span></h1>
+                              </div><br>
+                              <div class="row justify-content-center" ">
+                                  <img style="height:90px;width:110px;"
+                                      class=" rounded-circle mb-3" src="/user/assets/images/client-bg.png"
+                                      alt="#" />
+                              </div>
+                              <div class="flex items-center p-3 rounded-md"
+                                  style="background-color: rgb(199, 180, 198);">
+                                  <div class="shrink-0">
+  
+                                  </div>
+                                  <label class="block row justify-content-center" style="padding-left: 245px;">
+                                      <span class="sr-only">Choose profile photo</span>
+                                      <input type="file" name="file" class="block w-full text-sm text-slate-500
+                                          file:mr-4 file:py-2 file:px-4
+                                          file:rounded-full file:border-0
+                                          file:text-sm file:font-semibold
+                                          file:bg-violet-50 file:text-violet-700
+                                          hover:file:bg-violet-100" style="border-radius:15px ;"/>
+                                  </label>
+                              </div>
+  
+                              <div class="row">
+                                  <div class="col-6 mt-2 mb-2"><label class="form-label">Full
+                                          Name:</label>
+  
+                                      <input class="form-control" type="text" name="name"
+                                          value="John Doe">
+                                  </div>
+                                  <div class="col-6 mt-2 mb-2"><label class="form-label">Email:</label>
+                                      <input class="form-control" type="text" name="email"
+                                          value="doe@gmail.com">
+                                  </div>
+                              </div>
+                              <div class="row">
+  
+                                  <div class="col-6 mt-2 mb-2"><label class="form-label">Password:</label>
+                                      <input class="form-control" type="password" name="password" readonly
+                                          value="78787878">
+  
+                                  </div>
+                                  <div class="col-6 mt-2 mb-2"><label class="form-label">Contact:</label>
+                                      <input class="form-control" type="number" name="contact"
+                                          value="8989898989">
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-6 mt-2 mb-2"><label class="form-label">Contact:</label>
+                                      <input class="form-control" type="number" name="contact"
+                                          value="{{user.user_contact}}">
+                                  </div>
+                                  <div class="col-6 mt-2 mb-2"><label class="form-label">license
+                                          Plate:</label>
+                                      <input class="form-control" type="tel" name="gender"
+                                          value="564asdas54as">
+                                  </div>
+                              </div>
+                              <br>
+                              <div class="row justify-content-center">
+                                  <div class="col-4">
+                                      <button class="btn  mb-3 mx-3">Update</button>
+                                  </div>
+                              </div>
+                      </div>
+                      </form>
+  
+                  </div>
+              </div>
+  
+          </div>
+      </div>
+  </div>
