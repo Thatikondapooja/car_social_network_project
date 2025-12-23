@@ -1,6 +1,8 @@
 import re
 import os
-
+import numpy as np
+import cv2
+import pytesseract
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -27,26 +29,48 @@ def normalize_plate(text):
 
 # -------------------------------
 # USER INDEX (CONNECT DRIVER)
-# -------------------------------
+# ------------------------------
 
 def normalize_plate(text):
     text = text.upper()
-    text = re.sub(r'[^A-Z0-9]', '', text)
-    return text
+    return re.sub(r'[^A-Z0-9]', '', text)
 
 
 def user_index(request):
+    driver = None
+
     if request.method == "POST":
-        plate_text = request.POST.get("plate_text")
+
+        # 1️⃣ MANUAL INPUT (PRODUCTION)
+        plate_text = request.POST.get("plate_text", "").strip()
+
+        # 2️⃣ OCR (LOCAL ONLY)
+        if not plate_text and request.FILES.get("license"):
+            try:
+                image_file = request.FILES["license"]
+                image = cv2.imdecode(
+                    np.frombuffer(image_file.read(), np.uint8),
+                    cv2.IMREAD_COLOR
+                )
+
+                gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                plate_text = pytesseract.image_to_string(
+                    gray,
+                    config="--psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                )
+
+            except Exception as e:
+                print("OCR ERROR:", e)
+
+        plate_text = normalize_plate(plate_text)
 
         if not plate_text:
-            messages.error(request, "Please enter a license plate number")
+            messages.error(request, "Please enter license plate number")
             return redirect("user_index")
 
-        license_no = normalize_plate(plate_text)
-
+        # 🔍 DATABASE SEARCH
         driver = UserModel.objects.filter(
-            user_license__iexact=license_no,
+            user_license__iexact=plate_text,
             user_status="accepted"
         ).first()
 
@@ -54,9 +78,7 @@ def user_index(request):
             messages.info(request, "No Driver Found With This Plate")
             return redirect("user_index")
 
-        return render(request, "user/user-index.html", {"driver": driver})
-
-    return render(request, "user/user-index.html")
+    return render(request, "user/user-index.html", {"driver": driver})
 
 # -------------------------------
 # USER INTERACTIONS
