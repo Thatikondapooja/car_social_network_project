@@ -1,8 +1,7 @@
 import re
+import os
 import cv2
 import numpy as np
-import pytesseract
-import requests
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -10,89 +9,53 @@ from django.core.paginator import Paginator
 from django.core.mail import EmailMultiAlternatives
 
 from car_social_network.settings import DEFAULT_FROM_EMAIL
+from userapp.models import UserModel, InteractionModel, FeedbackModel
+
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-
-from adminapp.models import *
-from mainapp.models import *
-from userapp.models import *
+import requests
 
 
-# =============================
-# UTIL: Normalize license plate
-# =============================
+# -------------------------------
+# Utility
+# -------------------------------
 def normalize_plate(text):
-    if not text:
-        return ""
-
     text = text.upper()
     text = re.sub(r'[^A-Z0-9]', '', text)
-
-    # OCR common corrections
-    text = text.replace('O', '0')
-    text = text.replace('I', '1')
-    text = text.replace('Z', '2')
-
+    text = text.replace('O', '0').replace('I', '1').replace('Z', '2')
     return text
 
 
-# =============================
-# USER HOME / CONNECT PAGE
-# =============================
+# -------------------------------
+# USER INDEX (CONNECT DRIVER)
+# -------------------------------
 def user_index(request):
+    driver = None
+
     if request.method == "POST" and request.FILES.get("license"):
-        try:
-            plate_img = request.FILES["license"]
+        plate_file = request.FILES["license"]
 
-            # Tesseract path for Render (Linux)
-            pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+        # ✅ SAFE METHOD (WORKS ON RENDER)
+        # Example: AP09AB1234.jpg → AP09AB1234
+        plate_text = os.path.splitext(plate_file.name)[0]
+        license_no = normalize_plate(plate_text)
 
-            image = cv2.imdecode(
-                np.frombuffer(plate_img.read(), np.uint8),
-                cv2.IMREAD_COLOR
-            )
+        print("PLATE FROM FILE:", license_no)
 
-            if image is None:
-                raise ValueError("Image decode failed")
+        driver = UserModel.objects.filter(
+            user_license__icontains=license_no,
+            user_status="accepted"
+        ).first()
 
-            resize = cv2.resize(image, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
-            gray = cv2.cvtColor(resize, cv2.COLOR_BGR2GRAY)
-            blur = cv2.GaussianBlur(gray, (5, 5), 0)
-
-            raw_text = pytesseract.image_to_string(
-                blur,
-                config="--psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            )
-
-            license_no = normalize_plate(raw_text)
-            print("OCR RAW:", raw_text)
-            print("OCR CLEAN:", license_no)
-
-            if not license_no:
-                messages.error(request, "Unable to read license plate")
-                return redirect("user_index")
-
-            driver = UserModel.objects.filter(
-                user_license__iexact=license_no,
-                user_status="accepted"
-            ).first()
-
-            if not driver:
-                messages.info(request, "No Driver Found With This Plate")
-                return redirect("user_index")
-
-            return render(request, "user/user-index.html", {"driver": driver})
-
-        except Exception as e:
-            print("OCR ERROR:", e)
-            messages.error(request, "Unable to read license plate")
+        if not driver:
+            messages.info(request, "No Driver Found With This Plate")
             return redirect("user_index")
 
-    return render(request, "user/user-index.html")
+    return render(request, "user/user-index.html", {"driver": driver})
 
 
-# =============================
+# -------------------------------
 # USER INTERACTIONS
-# =============================
+# -------------------------------
 def user_interactions(request):
     user_id = request.session.get("user_id")
     interactions = InteractionModel.objects.filter(from_user=user_id)
@@ -101,9 +64,9 @@ def user_interactions(request):
     return render(request, "user/user-interactions.html", {"a": page})
 
 
-# =============================
+# -------------------------------
 # USER PROFILE
-# =============================
+# -------------------------------
 def user_profile(request):
     user_id = request.session.get("user_id")
     user = UserModel.objects.get(user_id=user_id)
@@ -116,8 +79,8 @@ def user_profile(request):
         user.user_privacy_status = request.POST.get("privacy")
         user.user_license = request.POST.get("license")
 
-        if request.FILES.get("file"):
-            user.user_photo = request.FILES["file"]
+        if request.FILES.get("photo"):
+            user.user_photo = request.FILES["photo"]
 
         user.save()
         messages.success(request, "Profile updated successfully")
@@ -126,9 +89,9 @@ def user_profile(request):
     return render(request, "user/user-profile.html", {"user": user})
 
 
-# =============================
+# -------------------------------
 # USER FEEDBACK
-# =============================
+# -------------------------------
 def user_feedback(request):
     user_id = request.session.get("user_id")
     user = UserModel.objects.get(user_id=user_id)
@@ -137,8 +100,8 @@ def user_feedback(request):
         rating = request.POST.get("rating")
         review = request.POST.get("review")
 
-        sid = SentimentIntensityAnalyzer()
-        score = sid.polarity_scores(review)["compound"]
+        analyzer = SentimentIntensityAnalyzer()
+        score = analyzer.polarity_scores(review)["compound"]
 
         sentiment = "neutral"
         if score > 0:
@@ -159,18 +122,18 @@ def user_feedback(request):
     return render(request, "user/user-feedback.html")
 
 
-# =============================
+# -------------------------------
 # CONTACT EMAIL / SMS
-# =============================
+# -------------------------------
 def contact_email(request, driver_id, text):
-    user = UserModel.objects.get(user_id=request.session["user_id"])
+    user = UserModel.objects.get(user_id=request.session.get("user_id"))
     driver = UserModel.objects.get(user_id=driver_id)
 
     if request.method == "POST":
         message = request.POST.get("message")
 
         if text == "email":
-            html = f"<p>From: {user.user_name}</p><br>{message}"
+            html = f"<p>From {user.user_name}</p><br>{message}"
             msg = EmailMultiAlternatives(
                 "Car Social Network",
                 html,
@@ -182,29 +145,29 @@ def contact_email(request, driver_id, text):
 
             InteractionModel.objects.create(
                 message=message,
-                interac_type=text,
+                interac_type="email",
                 to_user=driver,
                 from_user=user,
             )
 
-            messages.success(request, "Email sent successfully")
+            messages.success(request, "Email sent")
 
     return render(request, "user/user-com.html", {"driver": driver, "text": text})
 
 
-# =============================
+# -------------------------------
 # CONTACT CALL
-# =============================
+# -------------------------------
 def contact_call(request, driver_id, text):
-    user = UserModel.objects.get(user_id=request.session["user_id"])
+    user = UserModel.objects.get(user_id=request.session.get("user_id"))
     driver = UserModel.objects.get(user_id=driver_id)
 
     InteractionModel.objects.create(
         message="call",
-        interac_type=text,
+        interac_type="call",
         to_user=driver,
         from_user=user,
     )
 
-    messages.success(request, "Call recorded successfully")
+    messages.success(request, "Call registered")
     return redirect("user_index")
