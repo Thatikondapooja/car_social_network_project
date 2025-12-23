@@ -29,28 +29,26 @@ def normalize_plate(text):
 
 # -------------------------------
 # USER INDEX (CONNECT DRIVER)
-# -----------------------------
+# ----------------------------
 
 def normalize_plate(text):
     text = text.upper()
-    text = re.sub(r'[^A-Z0-9]', '', text)
-    return text
-
+    return re.sub(r'[^A-Z0-9]', '', text)
 
 def user_index(request):
-    driver = None
-
     if request.method == "POST":
         plate_text = request.POST.get("plate_text", "").strip()
 
         if not plate_text:
-            messages.error(request, "Please enter license plate number")
+            messages.error(request, "Please enter license plate")
             return redirect("user_index")
 
-        plate_text = normalize_plate(plate_text)
+        license_no = normalize_plate(plate_text)
+
+        print("SEARCH PLATE:", license_no)
 
         driver = UserModel.objects.filter(
-            user_license__iexact=plate_text,
+            user_license__iexact=license_no,
             user_status="accepted"
         ).first()
 
@@ -58,7 +56,12 @@ def user_index(request):
             messages.info(request, "No Driver Found With This Plate")
             return redirect("user_index")
 
-    return render(request, "user/user-index.html", {"driver": driver})
+        return render(request, "user/user-index.html", {
+            "driver": driver,
+            "searched_plate": license_no
+        })
+
+    return render(request, "user/user-index.html")
 
 # -------------------------------
 # USER INTERACTIONS
