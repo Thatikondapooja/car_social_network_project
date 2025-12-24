@@ -4,7 +4,188 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Car Social Network</title>
+  <title>Car Social Network</title><!DOCTYPE html>
+  <html lang="en">
+  {% load static %}
+  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'user/images/icons8-car-48.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet">
+  
+    <title>Car Social Network - Connect</title>
+  
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'user/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'user/css/templatemo-chain-app-dev.css' %}">
+    <link rel="stylesheet" href="{% static 'user/css/owl.css' %}">
+  
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head>
+  
+  <body>
+    <!-- Alert Messages -->
+    {% csrf_token %}
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <script>
+      swal({
+        title: "Success!",
+        text: "{{message}}",
+        icon: "success",
+        button: "OK",
+      });
+    </script>
+  
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+    <script>
+      swal({
+        title: "Warning!",
+        text: "{{message}}",
+        icon: "warning",
+        button: "OK",
+      });
+    </script>
+  
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+    <script>
+      swal({
+        title: "Info",
+        text: "{{message}}",
+        icon: "info",
+        button: "OK",
+      });
+    </script>
+  
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+    <script>
+      swal({
+        title: "Error!",
+        text: "{{message}}",
+        icon: "error",
+        button: "OK",
+      });
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+  
+    <!-- Preloader -->
+    <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Header -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-2">
+            <a href="{% url 'user_index' %}" class="logo">
+              <img src="{% static 'user/images/icons8-car-48.png' %}" style="height: 50px;width:50px;"
+                alt="Car Social Network">&nbsp;&nbsp;
+              <img src="{% static 'user/images/carsocial(1).svg' %}" style="height: 100px;width:190px;"
+                alt="Car Social Network">
+            </a>
+          </div>
+          <div class="col-9">
+            <nav class="main-nav">
+              <ul class="nav">
+                <li class="scroll-to-section"><a href="{% url 'user_index' %}" class="active">Connect</a></li>
+                <li class="scroll-to-section"><a href="{% url 'user_interactions' %}">My Interactions</a></li>
+                <li class="scroll-to-section"><a href="{% url 'user_profile' %}">My Profile</a></li>
+                <li class="scroll-to-section"><a href="{% url 'user_feedback' %}">Feedback</a></li>
+                <li class="scroll-to-section"><a href="{% url 'home_index' %}">Logout</a></li>
+                <li>
+                  <div class="gradient-button"></div>
+                </li>
+              </ul>
+              <a class='menu-trigger'>
+                <span>Menu</span>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+    <!-- Search Section -->
+    <div id="services" class="services section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <h2 class="text-center mb-5" style="color: rgb(18, 110, 141);">Find The Driver Here!</h2>
+  
+            <!-- Search Form -->
+            <div class="card mb-5" style="background-color: rgb(18, 110, 141);">
+              <div class="card-body">
+                <form method="post" onsubmit="return validateSearch();">
+                  {% csrf_token %}
+  
+                  <div class="form-outline mb-4">
+                    <label class="form-label text-white" for="plateInput">Enter License Plate Number:</label>
+                    <input type="text" id="plateInput" name="plate_text" class="form-control"
+                      placeholder="Enter License Plate (e.g. TS09ET7188 or TS-09-ET-7188)"
+                      style="font-size: 16px; padding: 12px;">
+                    <small class="form-text text-light">You can enter with or without spaces/dashes</small>
+                  </div>
+  
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-info text-black"
+                      style="background-color: rgb(85, 213, 213); padding: 10px 40px;">
+                      <i class="fa fa-search"></i> Search Driver
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+  
+            <!-- Driver Details Card -->
+            {% if driver %}
+            <div class="card" style="background-color: rgb(18, 110, 141);">
+              <div class="card-body">
+                <h3 class="text-white mb-4">Driver Found!</h3>
+                <hr style="border-color: white;">
+  
+                <div class="row">
+                  <!-- Driver Photo -->
+                  <div class="col-md-3 text-center mb-3">
+                    {% if driver.user_photo %}
+                    <img src="{{ driver.user_photo.url }}" alt="Driver Photo" class="img-fluid rounded-circle"
+                      style="width: 150px; height: 150px; object-fit: cover; border: 3px solid white;">
+                    {% else %}
+                    <img src="{% static 'user/images/default-avatar.png' %}" alt="Default Photo"
+                      class="img-fluid rounded-circle"
+                      style="width: 150px; height: 150px; object-fit: cover; border: 3px solid white;">
+                    {% endif %}
+                  </div>
+  
+                  <!-- Driver Information -->
+                  <div class="col-md-9">
+                    <div class="text-white">
+                      <h5 class="mb-3">Driver Details:</h5>
+  
+                      {% if driver.user_privacy_status == "yes" %}
+                      <p><strong>Name:</strong> {{ driver.user_name }}</p>
+                      <p><strong>Email:</strong> {{ driver.user_email }}</p>
+                      <p><strong>Contact:</strong> {{ driver.us
 
   <link rel="icon" href="{% static 'user/images/icons8-car-48.png' %}">
   <link href="{% static 'user/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
