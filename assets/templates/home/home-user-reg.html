@@ -40,70 +40,40 @@ https://templatemo.com/tm-570-chain-app-dev
 <body>
     {% comment %} javaScript validation {% endcomment %}
 
-    <script type="text/javascript">
-        function loginvalidation() {
-            var name = document.myform.name
-            var email = document.myform.email
-            var mailformat = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/;
-            var contact = document.myform.contact
-            var password = document.myform.password
-            var license = document.myform.license
-            // var photo = document.myform.photo
-            var contact1 = document.myform.contact1
-            var visibal = document.myform.visibal
-            
-            
+   <script>
+    function loginvalidation() {
 
-             
-            if (name.value.length <= 0) {
-                alert("Please Enter your name")
-                name.focus();
-                return false;
-            }
-            if (email.value.length <= 0) {
-                alert("Please Enter your email")
-                email.focus();
-                return false;
-            }
-          
-            if (contact.value.length <= 0) {
-                alert("Please Enter your contact")
-                contact.focus();
-                return false;
-            }
+        var name = document.myform.name.value.trim();
+        var email = document.myform.email.value.trim();
+        var contact = document.myform.contact.value.trim();
+        var password = document.myform.password.value.trim();
+        var license = document.myform.license.value.trim();
 
-            if (password.value.length <= 0) {
-                alert("Please Create your password")
-                password.focus();
-                return false;
-            }
-            
-            if (license.value.length <= 0) {
-                alert("Please select your License plate image")
-                license.focus();
-                return false;
-            }
-            if (photo.value.length <= 0) {
-                alert("Please select your profile photo")
-                photo.focus();
-                return false;
-            }
+        var contact1 = document.myform.contact1.checked;
+        var contact2 = document.myform.contact2.checked;
+        var contact3 = document.myform.contact3.checked;
 
+        var visibalYes = document.getElementById("inlineRadio1").checked;
+        var visibalNo = document.getElementById("inlineRadio2").checked;
 
-            if (contact1.value.length <= 0) {
-                alert("You have to select atleast one contact option like 'Email' ")
-                contact1.focus();
-                return false;
-            }
+        if (!name || !email || !contact || !password || !license) {
+            alert("All fields are required");
+            return false;
+        }
 
-            if (visibal.value.length <= 0) {
-                alert("Please select a privacy option")
-                visibal.focus();
-                return false;
-            }
-        }   
+        if (!(contact1 || contact2 || contact3)) {
+            alert("Select at least one contact method");
+            return false;
+        }
+
+        if (!(visibalYes || visibalNo)) {
+            alert("Please select privacy option");
+            return false;
+        }
+
+        return true;
+    }
 </script>
-
 
 
   {% csrf_token %}

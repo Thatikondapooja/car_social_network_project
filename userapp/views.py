@@ -47,7 +47,7 @@ def user_register(request):
         visibal = request.POST.get("visibal")
         
         # Validate required fields
-        if not all([name, email, contact, password, license, photo, visibal]):
+        if not all([name, email, contact, password, license, visibal]):
             messages.error(request, "All fields are required")
             return redirect("user_register")
         
