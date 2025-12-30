@@ -39,42 +39,71 @@ https://templatemo.com/tm-570-chain-app-dev
 
 <body>
     {% comment %} javaScript validation {% endcomment %}
-
-   <script>
+<script>
     function loginvalidation() {
-
+        // Get field values and trim whitespace
         var name = document.myform.name.value.trim();
         var email = document.myform.email.value.trim();
         var contact = document.myform.contact.value.trim();
         var password = document.myform.password.value.trim();
         var license = document.myform.license.value.trim();
 
+        // Check contact method checkboxes
         var contact1 = document.myform.contact1.checked;
         var contact2 = document.myform.contact2.checked;
         var contact3 = document.myform.contact3.checked;
 
+        // Check privacy radio buttons
         var visibalYes = document.getElementById("inlineRadio1").checked;
         var visibalNo = document.getElementById("inlineRadio2").checked;
 
-        if (!name || !email || !contact || !password || !license) {
-            alert("All fields are required");
+        // Validate required fields
+        if (!name) {
+            alert("Name is required");
             return false;
         }
 
-        if (!(contact1 || contact2 || contact3)) {
-            alert("Select at least one contact method");
+        if (!email) {
+            alert("Email is required");
             return false;
         }
 
-        if (!(visibalYes || visibalNo)) {
-            alert("Please select privacy option");
+        // Email format validation
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            alert("Please enter a valid email address");
             return false;
         }
 
-        return true;
-    }
+        if (!contact) {
+            alert("Contact number is required");
+            return false;
+        }
+
+        // Contact number validation (10 digits)
+        var contactPattern = /^\d{10}$/;
+        if (!contactPattern.test(contact)) {
+            alert("Please enter a valid 10-digit contact number");
+            return false;
+        }
+
+        if (!password) {
+            alert("Password is required");
+            return false;
+        }
+
+        // Password strength validation (at least 6 characters)
+        if (password.length < 6) { alert("Password must be at least 6 characters long"); return false; } if (!license) {
+            alert("License plate is required"); return false;
+        } // License plate validation (basic check) if (license.length < 4) { alert("Please enter a valid license plate number"); return false; } // Check if at least one contact method is selected 
+ if (!(contact1 || contact2 || contact3)) {
+            alert("Please select at least one contact method (Email, SMS, or Call)");
+             return false; } // Check if privacy option is selected
+              if (!(visibalYes || visibalNo)) { alert("Please select privacy option(Yes or No)"); 
+              return false; } // All validations passed return true; }
+
+
 </script>
-
 
   {% csrf_token %}
   {% if messages %}
