@@ -36,24 +36,27 @@ def user_register(request):
         contact = request.POST.get("contact")
         password = request.POST.get("password")
         license = request.POST.get("license")
-        photo = request.FILES.get("photo")
+        # photo = request.FILES.get("photo")
         
         # Contact preferences
         contact1 = request.POST.get("contact1", "")
         contact2 = request.POST.get("contact2", "")
         contact3 = request.POST.get("contact3", "")
         
+
+
         # Privacy
         visibal = request.POST.get("visibal")
         
         # Validate required fields
-        if not all([name, email, contact, password, license, visibal]):
+      
+        if not name or not email or not contact or not password or not license or not visibal:
             messages.error(request, "All fields are required")
             return redirect("user_register")
-        
-        # Check at least one contact method
-        if not any([contact1, contact2, contact3]):
-            messages.error(request, "Please select at least one contact method")
+
+# At least one contact method must be selected
+        if not (contact1 or contact2 or contact3):
+            messages.error(request, "Select at least one contact method")
             return redirect("user_register")
         
         # Normalize license plate
